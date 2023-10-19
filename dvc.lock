@@ -1,0 +1,109 @@
+schema: '2.0'
+stages:
+  raw_dataset_creation:
+    cmd: python src/data/load_data.py --config=params.yaml
+    deps:
+    - path: src/data/data_models/dr.sql
+      hash: md5
+      md5: be0010cde1df243ac27a4581134f19fe
+      size: 3186
+    - path: src/data/load_data.py
+      hash: md5
+      md5: b8ff5a7303d919893d162a69cf8b43d7
+      size: 1037
+    outs:
+    - path: data/raw/raw_data.csv
+      hash: md5
+      md5: bc9896f15271d1969e624b4094d4eb0d
+      size: 30278
+  process_data:
+    cmd: python src/data/process_data.py --config=params.yaml
+    deps:
+    - path: data/interim/interim_data.csv
+      hash: md5
+      md5: 392c8cb7d5762f0b803222874091b416
+      size: 31112
+    - path: src/data/process_data.py
+      hash: md5
+      md5: b1a4c44619359d3f01107cb56080f8fd
+      size: 2630
+    outs:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: 054eccf31ee1d06b62317b6cca395334
+      size: 18046
+  split_data:
+    cmd: python src/data/split_data.py --config=params.yaml
+    deps:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: 054eccf31ee1d06b62317b6cca395334
+      size: 18046
+    - path: src/data/split_data.py
+      hash: md5
+      md5: 961f9d7c076ffbd19e649fba3348da77
+      size: 1352
+    outs:
+    - path: data/processed/handle_test.csv
+      hash: md5
+      md5: 5c4153f752bd0eef897ccc86802cd871
+      size: 3879
+    - path: data/processed/handle_train.csv
+      hash: md5
+      md5: c9ce44b4d93b9d15844db10d1f4238be
+      size: 14407
+  model_train:
+    cmd: python src/models/train_model.py --config=params.yaml
+    deps:
+    - path: data/processed/handle_test.csv
+      hash: md5
+      md5: 5c4153f752bd0eef897ccc86802cd871
+      size: 3879
+    - path: data/processed/handle_train.csv
+      hash: md5
+      md5: c9ce44b4d93b9d15844db10d1f4238be
+      size: 14407
+    - path: src/models/train_model.py
+      hash: md5
+      md5: cec0453a583b651a1cd1fb0cf7592c16
+      size: 3748
+    params:
+      params.yaml:
+        random_forest.max_depth: 10
+        random_forest.n_estimators: 300
+  log_production_model:
+    cmd: python src/models/production_model_selection.py --config=params.yaml
+    deps:
+    - path: src/models/production_model_selection.py
+      hash: md5
+      md5: 4df564949aa822db99bd059de10465c9
+      size: 1787
+    params:
+      params.yaml:
+        random_forest.max_depth: 10
+        random_forest.n_estimators: 300
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 6ea98f1f2a5b296c1e9288897cebd86d
+      size: 2997754
+  feature_creation:
+    cmd: python src/features/build_features.py --config=params.yaml
+    deps:
+    - path: data/raw/raw_data.csv
+      hash: md5
+      md5: bc9896f15271d1969e624b4094d4eb0d
+      size: 30278
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 31e4668a91a62196265660f247c70739
+      size: 1835
+    - path: src/features/popularity_score.csv
+      hash: md5
+      md5: 67976e9af70c0b79f40f0d3ab2359662
+      size: 539
+    outs:
+    - path: data/interim/interim_data.csv
+      hash: md5
+      md5: 392c8cb7d5762f0b803222874091b416
+      size: 31112

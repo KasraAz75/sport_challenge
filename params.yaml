@@ -1,0 +1,47 @@
+raw_data_config:
+  db_uri: postgresql://postgres:postgres@local_pg:5432/postgres
+  data_model: src/data/data_models/dr.sql
+  raw_data_csv: data/raw/raw_data.csv
+  users: data/external/users.csv
+  wagers: data/external/wagers.csv
+  events: data/external/events.csv
+
+feature_engineering_config:
+  interim_data_csv: data/interim/interim_data.csv
+  team_popularity_df_path: src/features/popularity_score.csv
+
+processed_data_config:
+  target: handle
+  percentile_feature: time_slot
+  imputer_rows: ['last_5_handle_all']
+  cat_features: ['time_slot']
+  model_features: ['time_slot', 'week_of_season', 'home_users', 'away_users', 'concurrent_games', 
+                  'last_5_handle_all', 'home_team_popularity', 'away_team_popularity', 'handle']
+  processed_data_csv: data/processed/processed_data.csv
+
+split_data_config:
+  train_test_split_ratio: 0.2
+  random_state: 55
+  train_data_csv: data/processed/handle_train.csv
+  test_data_csv:  data/processed/handle_test.csv
+
+mlflow_config:
+  artifacts_dir: artifacts
+  experiment_name: model_iteration_5
+  run_name: random_forest
+  registered_model_name: random_forest_model
+  remote_server_uri: http://localhost:1234
+ 
+random_forest: 
+  max_depth: 10
+  n_estimators: 300
+
+production_model: 
+  mlflow_experiment_ids: [5]
+  model_dir: models/model.joblib
+
+model_webapp_dir: webapp/model_webapp_dir/model.joblib
+
+model_monitor:
+  target_col_name: handle
+  monitor_dashboard_html: reports/data_and_target_drift_dashboard.html

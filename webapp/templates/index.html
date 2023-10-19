@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sportsball wagering model
+{% endblock title %}
+
+{% block custom_css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock custom_css %}
+
+{% block body %}
+<!-- nav bar -->
+
+<nav class="navbar navbar-expand-lg navbar-light shadow fixed-top" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/">Sportsball wagering model</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/kasraaz000/sport_challenge/tree/main">source code</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div>
+    <!-- nav bar ends -->
+
+    <div class="container-fluid masthead">
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <form method="POST">
+                        <!-- Input block-->
+                        <div class="form-group">
+                            <label for="translation">
+                                <blockquote class="blockquote">
+                                    <p class="mb-2">Enter the details as indicated:</p>
+                                </blockquote>
+                            </label>
+                            <textarea class="form-control" name="week_of_season" rows="1" 
+                                placeholder="week_of_season"></textarea>
+                            <textarea class="form-control" name="home_users" rows="1"
+                                placeholder="home_users"></textarea>
+                            <textarea class="form-control" name="away_users" rows="1"
+                                placeholder="away_users"></textarea>
+                            <textarea class="form-control" name="concurrent_games" rows="1"
+                                placeholder="concurrent_games"></textarea>
+                            <textarea class="form-control" name="last_5_handle_all" rows="1"
+                                placeholder="last_5_handle_all"></textarea>
+                            <textarea class="form-control" name="home_team_popularity" rows="1"
+                                placeholder="home_team_popularity"></textarea>
+                            <textarea class="form-control" name="away_team_popularity" rows="1"
+                                placeholder="away_team_popularity"></textarea>
+                            <textarea class="form-control" name="time_slot_fri" rows="1"
+                                placeholder="time_slot_fri"></textarea>
+                            <textarea class="form-control" name="time_slot_mon_early" rows="1"
+                                placeholder="time_slot_mon_early"></textarea>
+                            <textarea class="form-control" name="time_slot_mon_late" rows="1"
+                                placeholder="time_slot_mon_late"></textarea>
+                            <textarea class="form-control" name="time_slot_mon_mid" rows="1"
+                                placeholder="time_slot_mon_mid"></textarea>
+                            <textarea class="form-control" name="time_slot_odd_days" rows="1"
+                                placeholder="time_slot_odd_days"></textarea>
+                            <textarea class="form-control" name="time_slot_sun" rows="1"
+                                placeholder="time_slot_sun"></textarea>
+                            <textarea class="form-control" name="time_slot_tues" rows="1"
+                                placeholder="time_slot_tues"></textarea>
+                        </div>
+                        <div class="form-group">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Predict</button></br>
+                        </br>
+                    </form>
+                </div>
+                <div class="col">
+                    <form>
+                        <div class="form-group">
+                            <label for="translation-result">
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-2">Prediction:</p>
+                                </blockquote>
+
+                            </label>
+                            <textarea readonly class="form-control" id="exTextarea" rows="5">{{ response }}</textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Popularity Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Devilish Deer</td>
+                <td>1.000000</td>
+            </tr>
+            <tr>
+                <td>Snappy Snakes</td>
+                <td>0.825423</td>
+            </tr>
+            <tr>
+                <td>Hungry Harpys</td>
+                <td>0.754839</td>
+            </tr>
+            <tr>
+                <td>Terrible Ticks</td>
+                <td>0.598884</td>
+            </tr>
+            <tr>
+                <td>Earnest Eagles</td>
+                <td>0.637715</td>
+            </tr>
+            <tr>
+                <td>Lucky Leopards</td>
+                <td>0.816863</td>
+            </tr>
+            <tr>
+                <td>Cyclic Cobras</td>
+                <td>0.542796</td>
+            </tr>
+            <tr>
+                <td>Intense Iguanas</td>
+                <td>0.357524</td>
+            </tr>
+            <tr>
+                <td>Ramblin Rabbits</td>
+                <td>0.331584</td>
+            </tr>
+            <tr>
+                <td>Lightning Lions</td>
+                <td>0.329948</td>
+            </tr>
+            <tr>
+                <td>Hopeful Hens</td>
+                <td>0.302205</td>
+            </tr>
+            <tr>
+                <td>Pirate Poodles</td>
+                <td>0.253823</td>
+            </tr>
+            <tr>
+                <td>Bellicose Bluejays</td>
+                <td>0.270222</td>
+            </tr>
+            <tr>
+                <td>Fleeting Felines</td>
+                <td>0.204171</td>
+            </tr>
+            <tr>
+                <td>Wonder Whales</td>
+                <td>0.119815</td>
+            </tr>
+            <tr>
+                <td>Devious Dandys</td>
+                <td>0.000000</td>
+            </tr>
+        </tbody>
+</table>
+
+    </div>
+</div>
+
+{% endblock body %}
+
+{% block custom_js %}
+<!-- Custom JS -->
+<script src="{{ url_for('static', filename='script/index.js') }}"></script>
+{% endblock custom_js %}

@@ -1,0 +1,54 @@
+stages:
+  raw_dataset_creation:
+    cmd: python src/data/load_data.py --config=params.yaml
+    deps:
+    - src/data/load_data.py
+    - src/data/data_models/dr.sql
+    outs:
+    - data/raw/raw_data.csv
+
+  feature_creation:
+    cmd: python src/features/build_features.py --config=params.yaml
+    deps:
+    - src/features/build_features.py
+    - data/raw/raw_data.csv
+    - src/features/popularity_score.csv
+    outs:
+    - data/interim/interim_data.csv
+
+  process_data:
+    cmd: python src/data/process_data.py --config=params.yaml
+    deps:
+    - src/data/process_data.py
+    - data/interim/interim_data.csv
+    outs:
+    - data/processed/processed_data.csv
+  
+  split_data:
+    cmd: python src/data/split_data.py --config=params.yaml
+    deps:
+    - src/data/split_data.py
+    - data/processed/processed_data.csv
+    outs:
+    - data/processed/handle_train.csv
+    - data/processed/handle_test.csv
+
+  model_train:
+    cmd: python src/models/train_model.py --config=params.yaml
+    deps:
+    - src/models/train_model.py
+    - data/processed/handle_train.csv
+    - data/processed/handle_test.csv
+    params:
+    - random_forest.max_depth
+    - random_forest.n_estimators
+
+  log_production_model:
+    cmd: python src/models/production_model_selection.py --config=params.yaml
+    deps:
+    - src/models/production_model_selection.py
+    params:
+    - random_forest.max_depth
+    - random_forest.n_estimators
+    outs:
+    - models/model.joblib

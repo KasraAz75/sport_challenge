@@ -1,0 +1,5 @@
+outs:
+- md5: 7be26acfe364c7fa8dda41d0e368b082
+  size: 54246005
+  hash: md5
+  path: wagers.csv
